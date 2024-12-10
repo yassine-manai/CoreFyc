@@ -1,0 +1,263 @@
+package export
+
+import (
+	"context"
+	"fmt"
+	"fyc/pkg/db"
+	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/jung-kurt/gofpdf"
+	"github.com/rs/zerolog/log"
+	"github.com/tealeg/xlsx"
+)
+
+// @Summary		Export Sign Data
+// @Description	Export the Sign data in PDF or Excel format based on the `file_type` query parameter
+// @Tags			BackOffice - Export
+// @Accept			json
+// @Produce		application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+// @Security		BearerAuthBackOffice
+// @Param			zone_name	query		string	false	"The camera zone name"
+// @Param			file_type	query		string	false	"The type of the export file"	Enums(pdf, excel)	default(pdf)
+// @Param			search		query		string	false	"The search data"
+// @Param			status		query		string	false	"The Status of the signs"	Enums(all,enabled, disabled)	default(all)
+// @Success		200			{string}	string	"Export successful"
+// @Failure		500			{string}	string	"Internal Server Error"
+// @Router			/export/sign [get]
+func ExportSign(c *gin.Context) {
+	log.Debug().Msg(" / / / / # Exporting Sign Data # / / / /  ")
+	ctx := context.Background()
+	stat := c.DefaultQuery("status", "all")
+	file_type := c.DefaultQuery("file_type", "pdf")
+	zone_name_query := c.Query("zone_name")
+	//search := c.DefaultQuery("zone_name", "")
+
+	c.Header("Content-Type", "application/pdf")
+	c.Header("Content-Disposition", "attachment; filename=sign_data.pdf")
+
+	var signs []db.SignResp
+	var err error
+	//var zone_name string
+
+	if zone_name_query == "" {
+
+		// Fetch signs based on status + zone empty
+		if stat == "enabled" {
+			signs, err = db.GetSignByStatus(ctx, "enabled")
+		} else if stat == "disabled" {
+			signs, err = db.GetSignByStatus(ctx, "disabled")
+		} else {
+			signs, err = db.GetSignByStatus(ctx, "")
+		}
+
+		if err != nil {
+			if err.Error() == "no rows found" {
+				log.Warn().Str("Status", stat).Msg("No signs found")
+				c.JSON(http.StatusNotFound, gin.H{
+					"success": false,
+					"message": "No Signs found",
+					"code":    -4,
+				})
+				return
+			}
+
+			log.Debug().Msgf("Error fetching data: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching sign data"})
+			return
+		}
+
+		if file_type == "pdf" {
+			ExportSignDataToPDF(c, signs)
+		} else if file_type == "excel" {
+			ExportSignDataToExcel(c, signs)
+		}
+
+	} else {
+		//zone_name, err := functions.ValidateAndConvertID(c, zone_name_query)
+		zone, err := db.GetZoneByName(ctx, zone_name_query)
+		if err != nil {
+			if err.Error() == "zone not found" {
+				log.Warn().Str("Zone_name", zone_name_query).Msg("Zone not found")
+				c.JSON(http.StatusNotFound, gin.H{
+					"success": false,
+					"message": "Zone not found",
+					"code":    -5,
+				})
+				return
+			}
+
+			log.Debug().Msgf("Error fetching zone: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching zone data"})
+			return
+		}
+
+		zone_id := zone.ZoneID
+		log.Debug().Int("Zone ID", zone_id).Interface("Zone_name", zone.Name["en"]).Send()
+
+		if stat == "enabled" {
+			signs, err = db.GetSignByStatusZone(ctx, "enabled", zone_id)
+		} else if stat == "disabled" {
+			signs, err = db.GetSignByStatusZone(ctx, "disabled", zone_id)
+		} else {
+			signs, err = db.GetSignByStatusZone(ctx, "", zone_id)
+		}
+
+		if err != nil {
+			log.Debug().Msgf("Error fetching data: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching zone data"})
+			return
+		}
+
+		if file_type == "pdf" {
+			ExportSignDataToPDF(c, signs)
+		} else if file_type == "excel" {
+			ExportSignDataToExcel(c, signs)
+		}
+	}
+}
+
+func ExportSignDataToPDF(c *gin.Context, signs []db.SignResp) {
+	pdf := gofpdf.New("L", "mm", "A4", "")
+	pdf.SetFont("Times", "", 9)
+
+	// Add a page
+	pdf.AddPage()
+
+	// Add title
+	pdf.SetFont("Times", "B", 14)
+	pdf.Cell(0, 10, "Sign Data Export")
+	pdf.Ln(20)
+
+	// Add table headers
+	pdf.SetFont("Times", "B", 9)
+	headers := []string{"Sign ID", "Sign Name EN", "Sign Name AR", "Sign Type", "Sign IP", "Sign Port", "Sign Username", "Zone ID", "Status", "Last Updated"}
+	widths := []float64{20, 35, 35, 30, 30, 20, 30, 20, 25, 35}
+
+	for i, header := range headers {
+		pdf.CellFormat(widths[i], 10, header, "1", 0, "C", false, 0, "")
+	}
+	pdf.Ln(-1)
+
+	// Add table content
+	pdf.SetFont("Arial", "", 9)
+	if len(signs) > 0 {
+		for _, sign := range signs {
+			signNameAr, arExists := sign.SignName["ar"]
+			if !arExists || signNameAr == "" {
+				signNameAr = "No Arabic Sign Name"
+			}
+
+			signNameEn, arExists := sign.SignName["en"]
+			if !arExists || signNameEn == "" {
+				signNameEn = "No English Sign Name"
+			}
+
+			status := "Disabled"
+			if sign.IsEnabled {
+				status = "Enabled"
+			}
+
+			//SignAR := goarabic.ToGlyph(fmt.Sprintf("%v", signNameAr))
+
+			data := []string{
+				fmt.Sprintf("%d", sign.SignID),
+				fmt.Sprintf("%v", signNameEn),
+				fmt.Sprintf("%v", signNameAr),
+				sign.SignType,
+				sign.SignIP,
+				fmt.Sprintf("%d", sign.SignPort),
+				sign.SignUserName,
+				fmt.Sprintf("%d", sign.ZoneID),
+				status,
+				sign.LastUpdated,
+			}
+
+			for i, field := range data {
+				pdf.CellFormat(widths[i], 10, field, "1", 0, "C", false, 0, "")
+			}
+			pdf.Ln(-1)
+		}
+	} else {
+		pdf.CellFormat(275, 10, "No data available", "1", 1, "C", false, 0, "")
+	}
+
+	// Footer: Add time and API endpoint
+	currentTime := time.Now().Format("2006-01-02 15:04:05")
+	pdf.Ln(10)
+	pdf.SetFont("Arial", "I", 8)
+	pdf.CellFormat(0, 10, fmt.Sprintf("Generated on: %s", currentTime), "", 1, "C", false, 0, "")
+
+	// Set response headers and output PDF
+	c.Header("Content-Type", "application/pdf")
+	c.Header("Content-Disposition", "attachment; filename=sign_data.pdf")
+	err := pdf.Output(c.Writer)
+	if err != nil {
+		log.Debug().Msgf("Failed to generate PDF: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate PDF"})
+	}
+}
+
+func ExportSignDataToExcel(c *gin.Context, signs []db.SignResp) {
+	// Create a new Excel file
+	xlFile := xlsx.NewFile()
+
+	// Add a sheet
+	sheet, err := xlFile.AddSheet("Sign Data")
+	if err != nil {
+		log.Debug().Msgf("Failed to create Excel sheet: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create Excel sheet"})
+		return
+	}
+
+	// Create header row
+	headerRow := sheet.AddRow()
+	headers := []string{"Sign ID", "Sign Name EN", "Sign Name AR", "Sign Type", "Sign IP", "Sign Port", "Sign Username", "Zone ID", "Status", "Last Updated"}
+	for _, header := range headers {
+		headerRow.AddCell().Value = header
+	}
+
+	// Add data rows
+	for _, sign := range signs {
+		row := sheet.AddRow()
+
+		signNameEn := sign.SignName["en"]
+		signNameAr, arExists := sign.SignName["ar"]
+		if !arExists || signNameAr == "" {
+			signNameAr = "No Arabic Sign Name"
+		}
+
+		status := "Disabled"
+		if sign.IsEnabled {
+			status = "Enabled"
+		}
+
+		data := []string{
+			fmt.Sprintf("%d", sign.SignID),
+			fmt.Sprintf("%v", signNameEn),
+			fmt.Sprintf("%v", signNameAr),
+			sign.SignType,
+			sign.SignIP,
+			fmt.Sprintf("%d", sign.SignPort),
+			sign.SignUserName,
+			fmt.Sprintf("%d", sign.ZoneID),
+			status,
+			sign.LastUpdated,
+		}
+
+		for _, field := range data {
+			row.AddCell().Value = field
+		}
+	}
+
+	// Set response headers and output Excel
+	c.Header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	c.Header("Content-Disposition", "attachment; filename=sign_data.xlsx")
+	err = xlFile.Write(c.Writer)
+	if err != nil {
+		log.Debug().Msgf("Failed to write Excel file: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate Excel file"})
+	}
+}

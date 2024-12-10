@@ -1,0 +1,2809 @@
+definitions:
+  backoffice.CronInfo:
+    properties:
+      counting_clean_cron:
+        type: integer
+      fyc_clean_cron:
+        type: integer
+      is_counting_enabled:
+        type: boolean
+      is_fyc_enabled:
+        type: boolean
+    type: object
+  backoffice.GeneralInfo:
+    properties:
+      carpark_id:
+        type: integer
+      carpark_name:
+        type: object
+      default_lang:
+        type: string
+      pka_image_size:
+        type: string
+    type: object
+  backoffice.KioskInfo:
+    properties:
+      TC:
+        type: string
+      app_logo:
+        type: string
+      timeout_screenKiosk:
+        type: integer
+    type: object
+  backoffice.PageLink:
+    properties:
+      active:
+        type: boolean
+      page:
+        type: integer
+      url:
+        type: string
+    type: object
+  backoffice.PaginatedResponse:
+    properties:
+      data:
+        items:
+          additionalProperties: true
+          type: object
+        type: array
+      payload:
+        properties:
+          pagination:
+            $ref: '#/definitions/backoffice.Pagination'
+        type: object
+    type: object
+  backoffice.Pagination:
+    properties:
+      first_page_url:
+        type: string
+      last_page_url:
+        type: string
+      links:
+        items:
+          $ref: '#/definitions/backoffice.PageLink'
+        type: array
+      next_page_url:
+        type: string
+      prev_page_url:
+        type: string
+      total_pages:
+        type: integer
+    type: object
+  backoffice.ResponseData:
+    properties:
+      Kiosk:
+        $ref: '#/definitions/backoffice.KioskInfo'
+      cron:
+        $ref: '#/definitions/backoffice.CronInfo'
+      general:
+        $ref: '#/definitions/backoffice.GeneralInfo'
+    type: object
+  backoffice.User:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  db.ApiKey:
+    properties:
+      client_id:
+        type: string
+      client_name:
+        type: string
+      client_secret:
+        type: string
+      fuzzy_logic:
+        type: boolean
+      grant_type:
+        type: string
+    required:
+    - client_id
+    - client_secret
+    - grant_type
+    type: object
+  db.Camera:
+    properties:
+      cam_id:
+        type: integer
+      cam_ip:
+        type: string
+      cam_name:
+        type: string
+      cam_password:
+        type: string
+      cam_port:
+        type: integer
+      cam_type:
+        type: string
+      cam_user:
+        type: string
+      direction:
+        type: string
+      extra:
+        type: object
+      is_enabled:
+        type: boolean
+      zone_in_id:
+        type: integer
+      zone_out_id:
+        type: integer
+    required:
+    - cam_id
+    - cam_ip
+    - cam_name
+    - cam_password
+    - cam_port
+    - cam_type
+    - cam_user
+    - direction
+    - zone_in_id
+    - zone_out_id
+    type: object
+  db.CarDetail:
+    properties:
+      cam_body:
+        type: object
+      extra:
+        type: object
+      id:
+        type: integer
+      image1:
+        type: string
+      image2:
+        type: string
+    required:
+    - cam_body
+    - image1
+    - image2
+    type: object
+  db.ErrorMessage:
+    properties:
+      code:
+        type: integer
+      messages:
+        type: object
+    type: object
+  db.ImageZone:
+    properties:
+      extra:
+        type: object
+      id:
+        type: integer
+      image_l:
+        type: string
+      image_s:
+        type: string
+      language:
+        type: string
+      zone_id:
+        type: integer
+    required:
+    - image_l
+    - image_s
+    - language
+    - zone_id
+    type: object
+  db.PresentCar:
+    properties:
+      camera_id:
+        type: integer
+      car_details_id:
+        type: integer
+      confidence:
+        type: integer
+      current_zone_id:
+        type: integer
+      direction:
+        type: string
+      extra:
+        type: object
+      id:
+        type: integer
+      last_zone_id:
+        type: integer
+      lpn:
+        type: string
+      transaction_date:
+        type: string
+    required:
+    - camera_id
+    - car_details_id
+    - confidence
+    - current_zone_id
+    - direction
+    - last_zone_id
+    - lpn
+    - transaction_date
+    type: object
+  db.PresentCarHistory:
+    properties:
+      camera_id:
+        type: integer
+      car_details_id:
+        type: integer
+      confidence:
+        type: integer
+      current_zone_id:
+        type: integer
+      direction:
+        type: string
+      extra:
+        type: object
+      id:
+        type: integer
+      last_zone_id:
+        type: integer
+      lpn:
+        type: string
+      transaction_date:
+        type: string
+    required:
+    - camera_id
+    - car_details_id
+    - confidence
+    - current_zone_id
+    - direction
+    - last_zone_id
+    - lpn
+    - transaction_date
+    type: object
+  db.Settings:
+    properties:
+      app_logo:
+        type: string
+      carpark_id:
+        type: integer
+      carpark_name:
+        type: object
+      counting_clean_cron:
+        type: integer
+      default_lang:
+        type: string
+      fyc_clean_cron:
+        type: integer
+      is_counting_enabled:
+        type: boolean
+      is_fyc_enabled:
+        type: boolean
+      pka_image_size:
+        type: string
+      tc:
+        type: string
+      timeout_screenKiosk:
+        type: integer
+    required:
+    - app_logo
+    - carpark_id
+    - carpark_name
+    - counting_clean_cron
+    - default_lang
+    - fyc_clean_cron
+    - pka_image_size
+    - timeout_screenKiosk
+    type: object
+  db.SettingsNoBind:
+    properties:
+      app_logo:
+        type: string
+      carpark_id:
+        type: integer
+      carpark_name:
+        type: object
+      counting_clean_cron:
+        type: integer
+      default_lang:
+        type: string
+      fyc_clean_cron:
+        type: integer
+      is_counting_enabled:
+        type: boolean
+      is_fyc_enabled:
+        type: boolean
+      pka_image_size:
+        type: string
+      tc:
+        type: string
+      timeout_screenKiosk:
+        type: integer
+    type: object
+  db.Sign:
+    properties:
+      sign_id:
+        type: integer
+      sign_ip:
+        type: string
+      sign_name:
+        type: object
+      sign_password:
+        type: string
+      sign_port:
+        type: integer
+      sign_type:
+        type: string
+      sign_username:
+        type: string
+      zone_id:
+        type: integer
+    required:
+    - sign_id
+    - sign_ip
+    - sign_name
+    - sign_password
+    - sign_port
+    - sign_type
+    - sign_username
+    - zone_id
+    type: object
+  db.User:
+    properties:
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    required:
+    - first_name
+    - last_name
+    - password
+    - role
+    - username
+    type: object
+  db.UserAudit:
+    properties:
+      action_date:
+        type: string
+      id:
+        type: integer
+      module:
+        type: string
+      new_value:
+        type: object
+      old_value:
+        type: object
+      user_id:
+        type: integer
+    required:
+    - action_date
+    - module
+    - new_value
+    - old_value
+    - user_id
+    type: object
+  db.Zone:
+    properties:
+      extra:
+        type: object
+      free_capacity:
+        type: integer
+      max_capacity:
+        type: integer
+      name:
+        type: object
+      zone_id:
+        type: integer
+    required:
+    - free_capacity
+    - max_capacity
+    - name
+    - zone_id
+    type: object
+  models.AddSignModel:
+    properties:
+      sign_id:
+        example: 101
+        type: integer
+      sign_ip:
+        type: string
+      sign_name:
+        $ref: '#/definitions/models.Name'
+      sign_password:
+        type: string
+      sign_port:
+        type: integer
+      sign_type:
+        type: string
+      sign_username:
+        type: string
+      zone_id:
+        type: integer
+    type: object
+  models.AddZoneModel:
+    properties:
+      free_capacity:
+        type: integer
+      images:
+        $ref: '#/definitions/models.Images'
+      max_capacity:
+        type: integer
+      name:
+        $ref: '#/definitions/models.Name'
+      zone_id:
+        type: integer
+    type: object
+  models.ImageModel:
+    properties:
+      image_l:
+        example: ""
+        type: string
+      image_s:
+        example: ""
+        type: string
+    type: object
+  models.Images:
+    properties:
+      ar:
+        $ref: '#/definitions/models.ImageModel'
+      en:
+        $ref: '#/definitions/models.ImageModel'
+    type: object
+  models.Name:
+    properties:
+      ar:
+        example: ""
+        type: string
+      en:
+        example: ""
+        type: string
+    type: object
+  models.UpdateSignModel:
+    properties:
+      is_enabled:
+        type: boolean
+      sign_id:
+        example: 101
+        type: integer
+      sign_ip:
+        type: string
+      sign_name:
+        $ref: '#/definitions/models.Name'
+      sign_password:
+        type: string
+      sign_port:
+        type: integer
+      sign_type:
+        type: string
+      sign_username:
+        type: string
+      zone_id:
+        type: integer
+    type: object
+  models.UpdateZoneModel:
+    properties:
+      free_capacity:
+        type: integer
+      images:
+        $ref: '#/definitions/models.Images'
+      is_enabled:
+        type: boolean
+      max_capacity:
+        type: integer
+      name:
+        $ref: '#/definitions/models.Name'
+    type: object
+  models.ZoneDataModel2:
+    properties:
+      free_capacity:
+        type: integer
+      images:
+        $ref: '#/definitions/models.Images'
+      is_enabled:
+        type: boolean
+      last_update:
+        type: string
+      max_capacity:
+        type: integer
+      name:
+        $ref: '#/definitions/models.Name'
+      zone_id:
+        type: integer
+    type: object
+  models.ZoneNamesModel:
+    properties:
+      free_capacity:
+        type: integer
+      max_capacity:
+        type: integer
+      name:
+        $ref: '#/definitions/models.Name'
+      zone_id:
+        type: integer
+    type: object
+  third_party.CarLocation:
+    properties:
+      license_plate:
+        type: string
+      picture_name:
+        type: string
+      spot_id:
+        type: string
+      zone_name:
+        type: string
+    type: object
+  third_party.PictureResponse:
+    properties:
+      picture_data:
+        type: string
+    type: object
+  third_party.TokenRespose:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      token_type:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: Find Your Car
+  version: 0.0.9
+paths:
+  /backoffice/add_zone:
+    post:
+      consumes:
+      - application/json
+      description: Add a new zone to the database
+      parameters:
+      - description: Zone data
+        in: body
+        name: zone
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddZoneModel'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Add a new zone
+      tags:
+      - Backoffice - Zone
+  /backoffice/addCamera:
+    post:
+      consumes:
+      - application/json
+      description: Add a new camera to the database
+      parameters:
+      - description: Camera data
+        in: body
+        name: Camera
+        required: true
+        schema:
+          $ref: '#/definitions/db.Camera'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Camera created successfully
+          schema:
+            $ref: '#/definitions/db.Camera'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Add a new camera
+      tags:
+      - Backoffice - Camera
+  /backoffice/addClient:
+    post:
+      consumes:
+      - application/json
+      description: Add a new client credential to the database
+      parameters:
+      - description: Client credential data
+        in: body
+        name: clientCred
+        required: true
+        schema:
+          $ref: '#/definitions/db.ApiKey'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.ApiKey'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Add a new client credential
+      tags:
+      - Backoffice - Clients
+  /backoffice/addSign:
+    post:
+      consumes:
+      - application/json
+      description: Add a new sign to the database
+      parameters:
+      - description: sign data
+        in: body
+        name: sign
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddSignModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: sign created successfully
+          schema:
+            $ref: '#/definitions/models.AddSignModel'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Add a new sign
+      tags:
+      - Backoffice - Signs
+  /backoffice/debug:
+    get:
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Debug BackOffice API
+      tags:
+      - BackOffice - Debug
+  /backoffice/delete_zone:
+    delete:
+      description: Delete a zone by ID
+      parameters:
+      - description: Zone ID
+        in: query
+        name: zone_id
+        required: true
+        type: integer
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Delete a zone
+      tags:
+      - Backoffice - Zone
+  /backoffice/deleteCameras:
+    delete:
+      description: Delete a camera by setting the is_deleted flag to true
+      parameters:
+      - description: Camera ID
+        in: query
+        name: camera_id
+        required: true
+        type: string
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Delete a camera
+      tags:
+      - Backoffice - Camera
+  /backoffice/deleteClient:
+    delete:
+      description: Delete a client credential by ID
+      parameters:
+      - description: Client ID
+        in: query
+        name: client_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Client API deleted successfully
+          schema:
+            type: string
+      security:
+      - BearerAuthBackOffice: []
+      summary: Delete a client credential
+      tags:
+      - Backoffice - Clients
+  /backoffice/deleteSign:
+    delete:
+      description: Soft delete a sign by setting the is_deleted flag to true
+      parameters:
+      - description: sign ID
+        in: query
+        name: sign_id
+        required: true
+        type: integer
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Soft delete a sign
+      tags:
+      - Backoffice - Signs
+  /backoffice/export_camera:
+    post:
+      consumes:
+      - application/json
+      description: Export the Camera data in PDF or Excel format based on the `file_type`
+        query parameter
+      parameters:
+      - default: pdf
+        description: The type of the export file
+        enum:
+        - pdf
+        - excel
+        in: query
+        name: file_type
+        type: string
+      - description: The list of camera IDs
+        in: body
+        name: camera_ids
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      produces:
+      - application/pdf
+      - ' application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      responses:
+        "200":
+          description: Export successful
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuthBackOffice: []
+      summary: Export Camera Data
+      tags:
+      - BackOffice - Export
+  /backoffice/export_cars:
+    post:
+      consumes:
+      - application/json
+      description: Export the present cars data in PDF or Excel format based on the
+        `file_type` query parameter
+      parameters:
+      - description: The list of Lincense Plates
+        in: body
+        name: license_plates
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      - default: pdf
+        description: The type of the export file
+        enum:
+        - pdf
+        - excel
+        in: query
+        name: file_type
+        type: string
+      produces:
+      - application/pdf
+      - ' application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      responses:
+        "200":
+          description: Export successful
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuthBackOffice: []
+      summary: Export Cars Data
+      tags:
+      - BackOffice - Export
+  /backoffice/export_client:
+    post:
+      consumes:
+      - application/json
+      description: Export the Client data in PDF or Excel format based on the `file_type`
+        query parameter
+      parameters:
+      - default: pdf
+        description: The type of the export file
+        enum:
+        - pdf
+        - excel
+        in: query
+        name: file_type
+        type: string
+      - description: The list of client IDs
+        in: body
+        name: client_ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      produces:
+      - application/pdf
+      - ' application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      responses:
+        "200":
+          description: Export successful
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuthBackOffice: []
+      summary: Export Client Data
+      tags:
+      - BackOffice - Export
+  /backoffice/export_sign:
+    post:
+      consumes:
+      - application/json
+      description: Export the Sign data in PDF or Excel format based on the `file_type`
+        query parameter
+      parameters:
+      - description: The list of Sign IDs
+        in: body
+        name: sign_ids
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      - default: pdf
+        description: The type of the export file
+        enum:
+        - pdf
+        - excel
+        in: query
+        name: file_type
+        type: string
+      produces:
+      - application/pdf
+      - ' application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      responses:
+        "200":
+          description: Export successful
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuthBackOffice: []
+      summary: Export Sign Data
+      tags:
+      - BackOffice - Export
+  /backoffice/export_zone:
+    post:
+      consumes:
+      - application/json
+      description: Export the zone data in PDF or Excel format based on the `file_type`
+        query parameter
+      parameters:
+      - default: pdf
+        description: The type of the export file
+        enum:
+        - pdf
+        - excel
+        in: query
+        name: file_type
+        type: string
+      - description: The list of zone IDs
+        in: body
+        name: zone_ids
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      produces:
+      - application/pdf
+      - ' application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      responses:
+        "200":
+          description: Export successful
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuthBackOffice: []
+      summary: Export Zone Data
+      tags:
+      - BackOffice - Export
+  /backoffice/get_clients:
+    get:
+      description: Get a list of all Clients
+      parameters:
+      - description: ClientID
+        in: query
+        name: clientId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of Clients
+          schema:
+            items:
+              $ref: '#/definitions/db.ApiKey'
+            type: array
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get all Clients
+      tags:
+      - Backoffice - Clients
+  /backoffice/get_dashboard_data:
+    get:
+      description: Retrieve dashboard data including total cameras, zones, capacity,
+        free spaces, signs, and present cars.
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get Dashboard Data
+      tags:
+      - Backoffice - Dashboard
+  /backoffice/get_present_car:
+    get:
+      description: |-
+        Get a list of all present cars with pagination. If no date is provided, it will return all present cars for the current day.
+        Date format must be YYYY-MM-DD.
+      parameters:
+      - description: Include StartDate in the format YYYY-MM-DD
+        in: query
+        name: start
+        type: string
+      - description: Include EndDate in the format YYYY-MM-DD
+        in: query
+        name: end
+        type: string
+      - description: Zone ID
+        in: query
+        name: zoneID
+        type: string
+      - description: License Plate
+        in: query
+        name: licensePlate
+        type: string
+      - default: false
+        description: Fuzzy Logic
+        in: query
+        name: fuzzy_logic
+        type: boolean
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: items_per_page
+        type: integer
+      - default: all
+        description: Present Car in Parking
+        enum:
+        - all
+        - "yes"
+        - "no"
+        in: query
+        name: is_present
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/backoffice.PaginatedResponse'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get all present cars
+      tags:
+      - Backoffice - PresentCars
+  /backoffice/get_present_car_id:
+    get:
+      description: |-
+        Get a list of present cars filtered by ID and date range. If no date is provided, it will return all present cars for the current day.
+        Date format must be YYYY-MM-DD.
+      parameters:
+      - description: Transaction ID
+        in: query
+        name: car_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.PresentCar'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get present cars by ID
+      tags:
+      - Backoffice - PresentCars
+  /backoffice/get_zones:
+    get:
+      description: Get a list of all zones, or a zone by ID if 'zone_id' parameter
+        is provided
+      parameters:
+      - description: Zone ID
+        in: query
+        name: zone_id
+        type: integer
+      - description: Include extra information if 'true'
+        in: query
+        name: extra
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of zones or a single zone
+          schema:
+            items:
+              $ref: '#/definitions/models.ZoneDataModel2'
+            type: array
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get all zones or a zone by ID
+      tags:
+      - Backoffice - Zone
+  /backoffice/get_zones_names:
+    get:
+      description: Get a list of all zones names
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of zones or a single zone
+          schema:
+            items:
+              $ref: '#/definitions/models.ZoneNamesModel'
+            type: array
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get all zones Names
+      tags:
+      - Backoffice - Zone
+  /backoffice/getCameras:
+    get:
+      description: Get a list of all cameras or a specific camera
+      parameters:
+      - description: Camera ID
+        in: query
+        name: camera_id
+        type: string
+      - description: Include extra information if 'true'
+        in: query
+        name: extra
+        type: string
+      responses:
+        "200":
+          description: List of cameras or a single camera
+          schema:
+            $ref: '#/definitions/db.Camera'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get cameras
+      tags:
+      - Backoffice - Camera
+  /backoffice/getSettings:
+    get:
+      description: Get settings
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Settings'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get settings
+      tags:
+      - Backoffice - Settings
+  /backoffice/getSign:
+    get:
+      description: Get a list of signs or a specific sign by ID with optional extra
+        data
+      parameters:
+      - description: sign ID
+        in: query
+        name: sign_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of signs or a single sign
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+      security:
+      - BearerAuthBackOffice: []
+      summary: Get signs or a specific sign by ID
+      tags:
+      - Backoffice - Signs
+  /backoffice/login:
+    post:
+      consumes:
+      - application/json
+      description: Login for users to access the system
+      parameters:
+      - description: User credentials
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/backoffice.User'
+      produces:
+      - application/json
+      responses: {}
+      summary: User Login
+      tags:
+      - Backoffice - Login
+  /backoffice/update_zone:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing zone in the database
+      parameters:
+      - description: Zone ID
+        in: query
+        name: zone_id
+        required: true
+        type: integer
+      - description: Updated Zone data
+        in: body
+        name: zone
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateZoneModel'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Update an existing zone
+      tags:
+      - Backoffice - Zone
+  /backoffice/updateCamera:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing camera by ID
+      parameters:
+      - description: Camera ID
+        in: query
+        name: camera_id
+        required: true
+        type: integer
+      - description: Updated camera data
+        in: body
+        name: Camera
+        required: true
+        schema:
+          $ref: '#/definitions/db.Camera'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Update a camera by ID
+      tags:
+      - Backoffice - Camera
+  /backoffice/updateClient:
+    put:
+      consumes:
+      - application/json
+      description: Update client credential
+      parameters:
+      - description: Client ID
+        in: query
+        name: client_id
+        required: true
+        type: string
+      - description: Client credential data
+        in: body
+        name: Client
+        required: true
+        schema:
+          $ref: '#/definitions/db.ApiKey'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.ApiKey'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Update client credential
+      tags:
+      - Backoffice - Clients
+  /backoffice/updateSettings:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing settings
+      parameters:
+      - description: CarPark ID
+        in: query
+        name: carpark_id
+        required: true
+        type: integer
+      - description: Updated settings data
+        in: body
+        name: settings
+        required: true
+        schema:
+          $ref: '#/definitions/backoffice.ResponseData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/backoffice.ResponseData'
+      security:
+      - BearerAuthBackOffice: []
+      summary: Update settings
+      tags:
+      - Backoffice - Settings
+  /backoffice/updateSign:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing sign by ID
+      parameters:
+      - description: sign ID
+        in: query
+        name: sign_id
+        required: true
+        type: integer
+      - description: Updated sign data
+        in: body
+        name: sign
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateSignModel'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuthBackOffice: []
+      summary: Update a sign by ID
+      tags:
+      - Backoffice - Signs
+  /findmycar:
+    get:
+      consumes:
+      - application/json
+      description: Find a car using the license plate number
+      parameters:
+      - description: License Plate
+        in: query
+        name: license_plate
+        required: true
+        type: string
+      - default: en
+        description: Language
+        in: query
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/third_party.CarLocation'
+      security:
+      - BearerAuth3rdParty: []
+      summary: Find a car by license plate
+      tags:
+      - Third Party
+  /fyc/UserAudit:
+    delete:
+      description: Soft delete a UserAudit by setting the is_deleted flag to true
+      parameters:
+      - description: UserAudit ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: UserAudit deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid UserAudit ID
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to delete UserAudit
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Soft delete a UserAudit
+      tags:
+      - User Audit
+    get:
+      description: Get a list of UserAudit or a specific UserAudit by ID with optional
+        extra data
+      parameters:
+      - description: UserAudit ID
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of UserAudit or a single UserAudit
+          schema:
+            $ref: '#/definitions/db.UserAudit'
+        "400":
+          description: 'Bad request: Invalid UserAudit ID'
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: No UserAudit found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get UserAudit or specific UserAudit by ID
+      tags:
+      - User Audit
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Add a new UserAudit to the database
+        Default Date Format :YYYY-MM-DD HH:mm:ss
+      parameters:
+      - description: UserAudit data
+        in: body
+        name: UserAudit
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserAudit'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: UserAudit created successfully
+          schema:
+            $ref: '#/definitions/db.UserAudit'
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to create a new UserAudit
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Add a new UserAudit
+      tags:
+      - User Audit
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Update an existing UserAudit by ID
+        Default Date Format :YYYY-MM-DD HH:mm:ss
+      parameters:
+      - description: UserAudit ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Updated UserAudit data
+        in: body
+        name: UserAudit
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserAudit'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: UserAudit updated successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request payload or ID mismatch
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: UserAudit not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to update UserAudit
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a UserAudit by ID
+      tags:
+      - User Audit
+  /fyc/apikey:
+    delete:
+      description: Delete a client credential by ID
+      parameters:
+      - description: Client ID
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Client credential deleted successfully
+          schema:
+            type: string
+      summary: Delete a client credential
+      tags:
+      - Client API
+    get:
+      description: Get a Client by ClientID, or all Client
+      parameters:
+      - description: ClientID
+        in: query
+        name: clientId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of clients or a single client
+          schema:
+            $ref: '#/definitions/db.ApiKey'
+        "400":
+          description: 'Bad request: Invalid client ID'
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: No Client found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get a Client by ClientID, or all Client
+      tags:
+      - Client API
+    post:
+      consumes:
+      - application/json
+      description: Add a new client credential to the database
+      parameters:
+      - description: Client credential data
+        in: body
+        name: clientCred
+        required: true
+        schema:
+          $ref: '#/definitions/db.ApiKey'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.ApiKey'
+      summary: Add a new client credential
+      tags:
+      - Client API
+    put:
+      consumes:
+      - application/json
+      description: Update an existing client credential by ID
+      parameters:
+      - description: Client ID
+        in: query
+        name: client_id
+        required: true
+        type: string
+      - description: Updated client credential data
+        in: body
+        name: clientCred
+        required: true
+        schema:
+          $ref: '#/definitions/db.ApiKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.ApiKey'
+      summary: Update a client credential
+      tags:
+      - Client API
+  /fyc/cameras:
+    delete:
+      description: Delete a camera by setting the is_deleted flag to true
+      parameters:
+      - description: Camera ID
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Camera deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid camera ID
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to delete camera
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a camera
+      tags:
+      - Cameras
+    get:
+      parameters:
+      - description: 'State of cameras: enabled or deleted'
+        in: query
+        name: state
+        type: string
+      - description: Include extra information if 'yes'
+        in: query
+        name: extra
+        type: string
+      responses:
+        "200":
+          description: List of cameras or a single camera
+          schema:
+            $ref: '#/definitions/db.Camera'
+        "400":
+          description: 'Bad request: Invalid camera ID'
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: No cameras found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get camera data
+      tags:
+      - Cameras
+    post:
+      consumes:
+      - application/json
+      description: Add a new camera to the database
+      parameters:
+      - description: Camera data
+        in: body
+        name: Camera
+        required: true
+        schema:
+          $ref: '#/definitions/db.Camera'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Camera created successfully
+          schema:
+            $ref: '#/definitions/db.Camera'
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to create a new camera
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Add a new camera
+      tags:
+      - Cameras
+    put:
+      consumes:
+      - application/json
+      description: Update an existing camera by ID
+      parameters:
+      - description: Camera ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Updated camera data
+        in: body
+        name: Camera
+        required: true
+        schema:
+          $ref: '#/definitions/db.Camera'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Camera updated successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request payload or ID mismatch
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Camera not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to update camera
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a camera by ID
+      tags:
+      - Cameras
+  /fyc/carDetails:
+    delete:
+      description: Delete a car detail by ID
+      parameters:
+      - description: Car detail ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Car detail deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Car detail not found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a car detail
+      tags:
+      - Car Details
+    get:
+      description: Get a list of all car details or a specific car detail by ID
+      parameters:
+      - description: CarDetail ID
+        in: query
+        name: id
+        type: integer
+      - description: Include extra information if 'yes'
+        in: query
+        name: extra
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.CarDetail'
+            type: array
+      summary: Get car details
+      tags:
+      - Car Details
+    post:
+      consumes:
+      - application/json
+      description: Add a new car detail to the database
+      parameters:
+      - description: Car detail data
+        in: body
+        name: CarDetail
+        required: true
+        schema:
+          $ref: '#/definitions/db.CarDetail'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.CarDetail'
+      summary: Add a new car detail
+      tags:
+      - Car Details
+    put:
+      consumes:
+      - application/json
+      description: Update an existing car detail by ID
+      parameters:
+      - description: Car ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Updated car detail data
+        in: body
+        name: CarDetail
+        required: true
+        schema:
+          $ref: '#/definitions/db.CarDetail'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.CarDetail'
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Car detail not found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a car detail by ID
+      tags:
+      - Car Details
+  /fyc/debug:
+    get:
+      produces:
+      - application/json
+      responses: {}
+      summary: Debug API
+      tags:
+      - Debug
+  /fyc/errors:
+    delete:
+      description: Delete a specific language entry from the messages field of an
+        error message by code
+      parameters:
+      - description: Error message code
+        in: query
+        name: code
+        required: true
+        type: string
+      - description: Language of the error message
+        in: query
+        name: lang
+        required: true
+        type: string
+      responses: {}
+      summary: Delete a specific language from an error message
+      tags:
+      - Errors
+    get:
+      description: Get a list of all error messages or a specific one by code and
+        language
+      parameters:
+      - description: Error code to fetch specific error message
+        in: query
+        name: code
+        type: string
+      - description: Language of the error message
+        in: query
+        name: lang
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.ErrorMessage'
+            type: array
+      summary: Get all error messages or a specific one
+      tags:
+      - Errors
+    post:
+      consumes:
+      - application/json
+      description: Create a new error message
+      parameters:
+      - description: Error message object
+        in: body
+        name: errMsg
+        required: true
+        schema:
+          $ref: '#/definitions/db.ErrorMessage'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.ErrorMessage'
+      summary: Create a new error message
+      tags:
+      - Errors
+    put:
+      consumes:
+      - application/json
+      description: Update an existing error message by code
+      parameters:
+      - description: Error message code
+        in: query
+        name: code
+        required: true
+        type: string
+      - description: Updated error message object
+        in: body
+        name: errMsg
+        required: true
+        schema:
+          $ref: '#/definitions/db.ErrorMessage'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.ErrorMessage'
+      summary: Update an existing error message
+      tags:
+      - Errors
+  /fyc/history:
+    get:
+      description: Get a list of all history records
+      parameters:
+      - description: Include extra information if 'yes'
+        in: query
+        name: extra
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of history records
+          schema:
+            items:
+              $ref: '#/definitions/db.PresentCarHistory'
+            type: array
+        "404":
+          description: No history records found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all history records
+      tags:
+      - History
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Add a new history record to the database
+        Default Date Format :YYYY-MM-DD HH:mm:ss
+      parameters:
+      - description: History record data
+        in: body
+        name: history
+        required: true
+        schema:
+          $ref: '#/definitions/db.PresentCarHistory'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: History record created successfully
+          schema:
+            $ref: '#/definitions/db.PresentCarHistory'
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to create a new history record
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Add a new history record
+      tags:
+      - History
+  /fyc/history/{id}:
+    delete:
+      description: Delete a history record by ID
+      parameters:
+      - description: History record ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: History record deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid ID format
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: History record not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to delete history record
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a history record by ID
+      tags:
+      - History
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Update an existing history record by ID
+        Default Date Format :YYYY-MM-DD HH:mm:ss
+      parameters:
+      - description: History record ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated history record data
+        in: body
+        name: history
+        required: true
+        schema:
+          $ref: '#/definitions/db.PresentCarHistory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: History record updated successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request payload or ID mismatch
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: History record not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to update history record
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a history record by ID
+      tags:
+      - History
+  /fyc/history/{lpn}:
+    get:
+      description: Get a specific history record by LPN
+      parameters:
+      - description: History record LPN
+        in: path
+        name: lpn
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.PresentCarHistory'
+        "400":
+          description: Invalid LPN format
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: History record not found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get history record by LPN
+      tags:
+      - History
+  /fyc/presentcars:
+    get:
+      description: Get a list of all present cars if not date provided it will return
+        all present cars that entered this day
+      parameters:
+      - description: Include extra information if 'yes'
+        in: query
+        name: extra
+        type: string
+      - description: License Plate Number
+        in: query
+        name: lpn
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.PresentCar'
+            type: array
+      summary: Get all present cars
+      tags:
+      - PresentCars
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Add a new present car to the database
+        Default Date Format :YYYY-MM-DD HH:mm:ss
+      parameters:
+      - description: Present Car data
+        in: body
+        name: presentCar
+        required: true
+        schema:
+          $ref: '#/definitions/db.PresentCar'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.PresentCar'
+      summary: Add a new present car
+      tags:
+      - PresentCars
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Update an existing present car by lpn
+        Default Date Format :YYYY-MM-DD HH:mm:ss
+      parameters:
+      - default: A
+        description: string default
+        in: query
+        name: lpn
+        required: true
+        type: string
+      - description: Updated present car data by lpn
+        in: body
+        name: presentCar
+        required: true
+        schema:
+          $ref: '#/definitions/db.PresentCar'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.PresentCar'
+      summary: Update a present car by LPN
+      tags:
+      - PresentCars
+  /fyc/presentcars/{id}:
+    delete:
+      description: Delete a present car by ID
+      parameters:
+      - description: Present Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Delete a present car
+      tags:
+      - PresentCars
+    put:
+      consumes:
+      - application/json
+      description: |-
+        Update an existing present car by ID
+        Default Date Format :YYYY-MM-DD HH:mm:ss
+      parameters:
+      - description: Present Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated present car data
+        in: body
+        name: presentCar
+        required: true
+        schema:
+          $ref: '#/definitions/db.PresentCar'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.PresentCar'
+      summary: Update a present car by ID
+      tags:
+      - PresentCars
+  /fyc/settings:
+    get:
+      description: Get settings by CarPark ID
+      parameters:
+      - description: CarPark ID
+        in: query
+        name: carpark_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Settings'
+      summary: Get settings by CarPark ID
+      tags:
+      - Settings
+    post:
+      consumes:
+      - application/json
+      description: Add new settings for a CarPark
+      parameters:
+      - description: Settings data
+        in: body
+        name: settings
+        required: true
+        schema:
+          $ref: '#/definitions/db.Settings'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.Settings'
+      summary: Add new settings
+      tags:
+      - Settings
+    put:
+      consumes:
+      - application/json
+      description: Update an existing settings by CarPark ID
+      parameters:
+      - description: Updated settings data
+        in: body
+        name: settings
+        required: true
+        schema:
+          $ref: '#/definitions/db.SettingsNoBind'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.SettingsNoBind'
+      summary: Update settings by CarPark ID
+      tags:
+      - Settings
+  /fyc/sign:
+    delete:
+      description: Soft delete a sign by setting the is_deleted flag to true
+      parameters:
+      - description: sign ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: sign deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid sign ID
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to delete sign
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Soft delete a sign
+      tags:
+      - Sign
+    get:
+      description: Get a list of signs (all, enabled, or deleted) or a specific sign
+        by ID with optional extra data
+      parameters:
+      - description: sign ID
+        in: query
+        name: id
+        type: integer
+      - description: 'Type of sign: all, enabled, or deleted (default is ''all'')'
+        in: query
+        name: type
+        type: string
+      - description: Include extra information if 'yes'
+        in: query
+        name: extra
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of signs or a single sign
+          schema:
+            $ref: '#/definitions/db.Sign'
+        "400":
+          description: 'Bad request: Invalid sign ID'
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: No sign found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get signs or a specific sign by ID
+      tags:
+      - Sign
+    post:
+      consumes:
+      - application/json
+      description: Add a new sign to the database
+      parameters:
+      - description: sign data
+        in: body
+        name: sign
+        required: true
+        schema:
+          $ref: '#/definitions/db.Sign'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: sign created successfully
+          schema:
+            $ref: '#/definitions/db.Sign'
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to create a new sign
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Add a new sign
+      tags:
+      - Sign
+    put:
+      consumes:
+      - application/json
+      description: Update an existing sign by ID
+      parameters:
+      - description: sign ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Updated sign data
+        in: body
+        name: sign
+        required: true
+        schema:
+          $ref: '#/definitions/db.Sign'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: sign updated successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request payload or ID mismatch
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: sign not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Failed to update sign
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a sign by ID
+      tags:
+      - Sign
+  /fyc/user:
+    delete:
+      description: Delete a Use by username
+      parameters:
+      - description: Username
+        in: query
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: User deleted successfully
+          schema:
+            type: string
+      summary: Delete a user
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Add a new User to the database
+      parameters:
+      - description: User data
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/db.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.User'
+      summary: Add a new User
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update an existing User by ID
+      parameters:
+      - description: Client ID
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: Updated client credential data
+        in: body
+        name: clientCred
+        required: true
+        schema:
+          $ref: '#/definitions/db.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.User'
+      summary: Update a client credential
+      tags:
+      - Users
+  /fyc/users:
+    get:
+      description: Get a list of users (all, enabled) or a specific user by username
+      parameters:
+      - description: Username
+        in: query
+        name: username
+        type: string
+      - description: 'Type of user: all or enabled (default is ''all'')'
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of Users or a single User
+          schema:
+            items:
+              $ref: '#/definitions/db.User'
+            type: array
+        "404":
+          description: No user found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Users or a specific User by username
+      tags:
+      - Users
+  /fyc/zones:
+    delete:
+      description: Delete a zone by ID
+      parameters:
+      - description: Zone ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Zone deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Zone not found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a zone
+      tags:
+      - Zones
+    get:
+      description: Get a list of all zones, or a zone by ID if 'id' parameter is provided
+      parameters:
+      - description: Zone ID
+        in: query
+        name: id
+        type: integer
+      - description: Include extra information if 'true'
+        in: query
+        name: extra
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of zones or a single zone
+          schema:
+            items:
+              $ref: '#/definitions/db.Zone'
+            type: array
+      summary: Get all zones
+      tags:
+      - Zones
+    post:
+      consumes:
+      - application/json
+      description: Add a new zone to the database
+      parameters:
+      - description: Zone data
+        in: body
+        name: zone
+        required: true
+        schema:
+          $ref: '#/definitions/db.Zone'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.Zone'
+      summary: Add a new zone
+      tags:
+      - Zones
+    put:
+      consumes:
+      - application/json
+      description: Update an existing zone by ID
+      parameters:
+      - description: Zone ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Updated zone data
+        in: body
+        name: zone
+        required: true
+        schema:
+          $ref: '#/definitions/db.Zone'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Zone'
+      summary: Update a zone by ID
+      tags:
+      - Zones
+  /fyc/zonesImage:
+    post:
+      consumes:
+      - application/json
+      description: Add a new zone image to the database
+      parameters:
+      - description: Zone image data
+        in: body
+        name: ImageZone
+        required: true
+        schema:
+          $ref: '#/definitions/db.ImageZone'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.ImageZone'
+      summary: Add a new zone Image
+      tags:
+      - Zones Image
+  /fyc/zonesImage/{id}:
+    delete:
+      description: Delete a zone image by ID
+      parameters:
+      - description: Zone image ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Zone image deleted successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Zone image not found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a zone image
+      tags:
+      - Zones Image
+    put:
+      consumes:
+      - application/json
+      description: Update the image data of an existing zone by its ID
+      parameters:
+      - description: Zone ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated zone image data
+        in: body
+        name: Image
+        required: true
+        schema:
+          $ref: '#/definitions/db.ImageZone'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Zone'
+      summary: Update a zone image by ID
+      tags:
+      - Zones Image
+  /fyc/zonesImages:
+    get:
+      description: Get a list of all zones images
+      parameters:
+      - description: Zone ID to fetch a specific zone's image
+        in: query
+        name: id
+        type: string
+      - description: Include extra information if 'yes'
+        in: query
+        name: extra
+        type: boolean
+      - description: choose the image type Small or Large (small or sm for Small Images
+          / lg or large for Large)
+        in: query
+        name: typeImage
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.ImageZone'
+            type: array
+      summary: Get all zones images
+      tags:
+      - Zones Image
+  /getpicture:
+    get:
+      description: Get an image using the picture name
+      parameters:
+      - description: Picture Name
+        in: query
+        name: picture_name
+        required: true
+        type: string
+      - default: small
+        description: Picture Size small is default size 'big or small'
+        in: query
+        name: picture_size
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/third_party.PictureResponse'
+      security:
+      - BearerAuth3rdParty: []
+      summary: Get a picture by picture name
+      tags:
+      - Third Party
+  /getsettings:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Settings'
+      security:
+      - BearerAuth3rdParty: []
+      summary: Get Settings
+      tags:
+      - Third Party
+  /token:
+    post:
+      description: Get an access token using client credentials
+      parameters:
+      - description: Client ID
+        in: formData
+        name: client_id
+        required: true
+        type: string
+      - description: Client Secret
+        in: formData
+        name: client_secret
+        required: true
+        type: string
+      - description: Grant Type
+        in: formData
+        name: grant_type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/third_party.TokenRespose'
+      summary: Get an access token
+      tags:
+      - Third Party
+  /v2/bays.json:
+    get:
+      description: Get ZONE with PKA SYSTEM
+      parameters:
+      - description: visit.plate.text
+        in: query
+        name: visit.plate.text
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: PKA SYSTEM API - Search Car
+      tags:
+      - PKA - API
+  /v2/maps/{imagename}:
+    get:
+      description: Retrieve an image from the PKA system by image name.
+      parameters:
+      - description: Image Name
+        in: path
+        name: imagename
+        required: true
+        type: string
+      produces:
+      - image/jpeg
+      - ' image/png'
+      responses:
+        "200":
+          description: Image retrieved successfully.
+          schema:
+            type: file
+      summary: PKA SYSTEM API - Search Image
+      tags:
+      - PKA - API
+securityDefinitions:
+  BearerAuth3rdParty:
+    description: 'Authorization token for third-party section (Ensure the token is
+      in this format: Bearer token)'
+    in: header
+    name: Authorization
+    type: apiKey
+  BearerAuthBackOffice:
+    description: 'Authorization token for back-office section (Ensure the token is
+      in this format: Bearer token)'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

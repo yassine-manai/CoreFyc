@@ -1,0 +1,85 @@
+services:
+  fyc:
+    image: yassinemanai/go_fmc:0.0.9
+    container_name: gofyc
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 8600
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: fycastero
+      DB_PASSWORD: asteroidea4711!
+      DB_NAME: fyc
+      JWT_SECRET: fmc4711
+      VALKEY_HOST: valkey
+      VALKEY_PORT: 6379
+      VALKEY_CHANNEL: fyc_valkey
+      GIN_RELEASE_MODE: "false"
+      TokenPrefBackoffice: "true"
+      TokenPref3rdParty: "false"
+      TokenCheck: "false"
+      ExtraLog: "false"
+      SaveXml: "false"
+      SwaggerBasePath: /
+      USERNAME: admin
+      PASSWORD: adminfyc
+    restart: unless-stopped
+    ports:
+      - "8600:8600"
+    depends_on:
+      - db
+      - valkey
+
+  db:
+    image: postgres:16-alpine
+    container_name: db
+    environment:
+      POSTGRES_DB: fyc
+      POSTGRES_USER: fycastero
+      POSTGRES_PASSWORD: asteroidea4711!
+    restart: unless-stopped
+    ports:
+      - "172.17.0.1:5432:5432"
+    volumes:
+      - /data/fyc/database_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  valkey:
+    container_name: valkey
+    hostname: valkey
+    image: valkey/valkey:8.0
+    volumes:
+      - ./valkey.conf:/etc/valkey/valkey.conf
+      - ./data:/data
+    command: valkey-server /etc/valkey/valkey.conf
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    ports:
+      - "6379:6379"
+
+  backoffice:
+    image: hamzuz/fyc-backoffice-front:v2
+    container_name: backoffice
+    environment:
+      PORT: 3011
+      VITE_APP_BASE_LAYOUT_CONFIG_KEY: 'metronic-react-demo1-8150'
+      VITE_APP_API_URL: http://fyc:8600/backoffice
+      VITE_APP_VERSION: v8.2.7
+      VITE_APP_THEME_NAME: Metornic
+      VITE_APP_THEME_DEMO: demo1
+      VITE_APP_BOOTSTRAP_DOCS_LINK: https://getbootstrap.com/docs/5.0
+      VITE_APP_SASS_PATH: src/_metronic/assets/sass/core/components
+      VITE_APP_SASS_VARIABLES_PATH: src/_metronic/assets/sass/core/components/_variables.scss
+      VITE_APP_PURCHASE_URL: https://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469
+      VITE_APP_PREVIEW_URL: https://preview.keenthemes.com/metronic8/react/demo1/
+      VITE_APP_PREVIEW_REACT_URL: https://preview.keenthemes.com/metronic8/react
+      VITE_APP_PREVIEW_DOCS_URL: https://preview.keenthemes.com/metronic8/react/docs
+      VITE_APP_THEME_API_URL: http://fyc:8600/fyc
+    restart: unless-stopped
+    ports:
+      - "3011:3011"
+    depends_on:
+      - fyc
